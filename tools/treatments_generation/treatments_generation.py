@@ -96,6 +96,44 @@ def initialize_struct():
         if not os.path.exists(PATH_OUT + folder): os.makedirs(PATH_OUT + folder)
     return folders
 
+def fuse(base_img, top, bottom):
+    treated_img_up = np.zeros_like(base_img)
+    treated_img_down = np.zeros_like(base_img)
+    for treatment in top:
+        treat2 = np.where((treatment[0]>0)&(treatment[1]>0), 255, 0)
+
+        noised = skimage.util.random_noise(treat2/255, mode='speckle', var=0.04**2)
+        noised = (255*noised).astype(np.uint8)
+        
+        kernel = np.ones((5,5),np.float32)/25
+        blurred_treat = cv2.filter2D(noised, -1, kernel)
+
+        # add all treats together
+        treated_img_up = np.bitwise_or(treated_img_up, blurred_treat)
+
+    for treatment in bottom:
+        treat2 = np.where((treatment[0]>0)&(treatment[1]>0), 255, 0)
+
+        noised = skimage.util.random_noise(treat2/255, mode='speckle', var=0.04**2)
+        noised = (255*noised).astype(np.uint8)
+        
+        kernel = np.ones((5,5),np.float32)/25
+        blurred_treat = cv2.filter2D(noised, -1, kernel)
+
+        # add all treats together
+        treated_img_down = np.bitwise_or(treated_img_down, blurred_treat)
+    
+    # fusion of neighbors treatments
+    treated_img_up2 = cv2.morphologyEx(treated_img_up, cv2.MORPH_CLOSE, np.ones((5, 15)))
+    treated_img_down2 = cv2.morphologyEx(treated_img_down, cv2.MORPH_CLOSE, np.ones((5, 15)))
+    treated_img_up = np.array(np.maximum(treated_img_up, treated_img_up2))
+    treated_img_down = np.array(np.maximum(treated_img_down, treated_img_down2))
+    treated_img = np.array(np.maximum(treated_img_up, treated_img_down))
+    treated_img = np.array(np.maximum(treated_img, base_img.copy()))
+    return treated_img
+
+
+
 def main():
     NB_IMG = 10
     NB_TREAT = 2
