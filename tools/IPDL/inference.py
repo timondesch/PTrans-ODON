@@ -55,12 +55,12 @@ def open_resize(path):
 def show(img):
     cv2.imshow(img*255)
 
-def createModel():
+def createModel(path):
     keras.backend.clear_session()
     model = inpaintingModel().prepare_model()
     model.compile(optimizer='adam', loss='mean_absolute_error')
     # keras.utils.plot_model(model, show_shapes=True, dpi=76, to_file='model_v1.png')
-    model.load_weights("./model_weights.keras")
+    model.load_weights(path))
     return model
 
 def infer(model, img):
