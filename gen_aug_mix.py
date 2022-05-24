@@ -42,7 +42,6 @@ for p in h5py_files:
         tooth_inpaint = {}
 
         inpaint = inference.infer(model, img/255)*255
-        plt.imsave("t.png", inpaint, cmap="gray")
 
         for i in [t for t in treatments[name] if treatments[name][t]]:
             segm = cv2.resize(np.array(f['y'])[...,i], (1024, 512), cv2.INTER_NEAREST)
