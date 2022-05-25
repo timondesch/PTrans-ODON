@@ -12,6 +12,13 @@ import cv2
 from tools.treatments_generation.treatments_generation import gen_treatment, fuse
 from tools.IPDL import inference
 
+print("""
+===========================================
+=                                         =
+=         Mixed data augmentation         =
+=                                         =
+===========================================
+""")
 
 WEIGHTS = [*range(1, 9)]
 WEIGHTS = WEIGHTS / np.sum(WEIGHTS)

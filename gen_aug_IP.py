@@ -14,6 +14,15 @@ import matplotlib.pyplot as plt
 
 from tools.IPDL import inference
 
+
+print("""
+===========================================
+=                                         =
+=   Data augmentation with Inpainting     =
+=                                         =
+===========================================
+""")
+
 model = inference.createModel("tools/IPDL/model_weights.keras")
 
 label_file = "IN/labels.csv"

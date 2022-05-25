@@ -10,8 +10,9 @@ import skimage
 """## Code"""
 
 PATH_IN = "../../IN/PNG/dataset_png/"
-NB_TOTAL = 0 
-PATH_OUT = "../../OUT/data_aug_treatments/"
+NB_TOTAL = 0
+os.makedirs("../../OUT/inpainting_training_set/")
+PATH_OUT = "../../OUT/inpainting_training_set/"
 NB_IMG = 10
 NB_TREAT_MIN, NB_TREAT_MAX = 1, 6
 

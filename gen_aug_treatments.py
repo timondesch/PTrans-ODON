@@ -11,6 +11,13 @@ import os
 
 from tools.treatments_generation.treatments_generation import gen_treatment, fuse
 
+print("""
+===========================================
+=                                         =
+= Data augmentation with false treatments =
+=                                         =
+===========================================
+""")
 
 WEIGHTS = [*range(1, 9)]
 WEIGHTS = WEIGHTS / np.sum(WEIGHTS)
@@ -64,5 +71,3 @@ for p in h5py_files:
             plt.imsave("OUT/data_aug_treatments/" + name + "_" + str(i) + ".png", current, cmap='gray')
             progress_index += 1
             print(f"Progress : {round(100*progress_index/progress_max, 1)}%")
-
-
