@@ -38,6 +38,11 @@
 └── README.md
 ```
 
+- `IN/` is where lives the inputs of the scripts (H5PY for data augmentation, PNG for inpainting model training, labels.csv for annotation)
+- `OUT` is where the output of data augmentation can be found (`data_aug_IP/` for only inpainting, `...mix/` for a mix of inpainting and false treatments, `...total_IP/` for inpainting on the full image and `...treatments/` for false treatment generation)
+- In `tools` is all our useful scripts that are used for our data augmentation (`IPDL/` for deep learning-based inpainting, `treatment_generation/` for false treatments generation, `dataset_annotation/` for treatment annotation and `inpainting_assessment/` for inpainting assessment using a comparison of segmentation)
+- In the base directory are also the `gen_aug_*` scripts for generating the augmented datasets as well as a `main` script for running all of them
+
 ## Requirements
 
 Below are the packages required to run the project:
