@@ -30,6 +30,9 @@ with open(label_file, 'r') as f:
 
 kernel = np.ones((5,5))
 
+progress_index = 0
+progress_max = len(h5py_files)
+
 for p in h5py_files:
     with h5py.File(p) as f:
         img = cv2.resize(np.array(f['X'])[...,0], (1024, 512), cv2.INTER_NEAREST)/255
@@ -59,3 +62,6 @@ for p in h5py_files:
             
                 
         plt.imsave("OUT/data_aug_total_IP/" + name + ".png", smartinpaint, cmap='gray')
+
+        progress_index += 1
+        print(f"Progress : {round(100*progress_index/progress_max, 1)}%")

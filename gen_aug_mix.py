@@ -16,6 +16,8 @@ from tools.IPDL import inference
 WEIGHTS = [*range(1, 9)]
 WEIGHTS = WEIGHTS / np.sum(WEIGHTS)
 
+NUMBER_IMAGES = 10
+
 
 label_file = "IN/labels.csv"
 model = inference.createModel("tools/IPDL/model_weights.keras")
@@ -33,6 +35,8 @@ with open(label_file, 'r') as f:
 
 kernel = np.ones((5,5))
 
+progress_index = 0
+progress_max = len(h5py_files) * NUMBER_IMAGES
 
 for p in h5py_files:
     with h5py.File(p) as f:
@@ -52,7 +56,7 @@ for p in h5py_files:
 
         UPPER = [*range(1, 17)]
         LOWER = [*range(17, 33)]
-        for k in range(random.randint(4,8)):
+        for k in range(NUMBER_IMAGES):
             top = []
             bottom = []
             current = img
@@ -74,3 +78,5 @@ for p in h5py_files:
             current = fuse(current, top, bottom)
 
             plt.imsave("OUT/data_aug_mix/" + name + "_" + str(k) + ".png", current, cmap='gray')
+            progress_index += 1
+            print(f"Progress : {round(100*progress_index/progress_max, 1)}%")
