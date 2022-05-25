@@ -1,7 +1,5 @@
-
 import h5py
 from glob import glob
-import random
 import csv
 
 import numpy as np
@@ -57,8 +55,11 @@ for p in h5py_files:
             top = []
             bottom = []
             current = img
-            temp = int(np.random.normal(5, 2))
-            selected_teeth = np.random.choice(tooth_t, (temp if temp>0 else 1), replace=False, p=weight_t)
+            temp = int(np.random.normal(4.5, 2))
+            while temp<=0 or temp>len(tooth_t):
+                temp = int(np.random.normal(4.5, 2))
+
+            selected_teeth = np.random.choice(tooth_t, temp, replace=False, p=weight_t)
             for tooth in selected_teeth:
                 segm = cv2.resize(np.array(f['y'])[...,tooth], (1024, 512), cv2.INTER_NEAREST)
                 tooth_w_t = np.where(segm, img, segm)
