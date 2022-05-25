@@ -50,8 +50,6 @@ for p in h5py_files:
             tooth_inpaint[i] = np.multiply(segm, inpaint)
         
 
-        top = []
-        bottom = []
         UPPER = [*range(1, 17)]
         LOWER = [*range(17, 33)]
         for k in range(random.randint(4,8)):
@@ -64,7 +62,7 @@ for p in h5py_files:
                         current = np.where(tooth_inpaint[i], tooth_inpaint[i], current)
 
                 else:
-                    if(np.any(np.array(f['y'])[...,i])) and np.random.choice([True, False], 1, p=[(((i-1)%8+1)/9)**2, 1 - (((i-1)%8+1)/9)**2]):            
+                    if(np.any(np.array(f['y'])[...,i])) and np.random.choice([True, False], 1, p=[(((i-1)%8+1)/18), 1 - (((i-1)%8+1)/18)]):            
                         segm = cv2.resize(np.array(f['y'])[...,i], (1024, 512), cv2.INTER_NEAREST)
                         tooth = np.where(segm, img, segm)
                         treatment = gen_treatment(i, tooth)

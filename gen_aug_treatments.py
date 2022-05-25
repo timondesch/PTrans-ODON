@@ -20,6 +20,8 @@ label_file = "IN/labels.csv"
 
 h5py_files = glob('IN/H5PY/dataset_h5py/*.h5py')
 
+UPPER = [*range(1, 17)]
+LOWER = [*range(17, 33)]
 
 treatments = {}
 with open(label_file, 'r') as f:
@@ -31,8 +33,6 @@ with open(label_file, 'r') as f:
 
 
 for p in h5py_files:
-    UPPER = [*range(1, 17)]
-    LOWER = [*range(17, 33)]
     with h5py.File(p) as f:
         img = cv2.resize(np.array(f['X'])[...,0], (1024, 512), cv2.INTER_NEAREST)
         name = os.path.splitext(os.path.basename(p))[0]
@@ -42,9 +42,9 @@ for p in h5py_files:
         sum_weight_t = sum(weight_t)
         weight_t = [t/sum_weight_t for t in weight_t]
 
-        top = []
-        bottom = []
-        for i in range(min(6, len(tooth_t)+1)):
+        for i in range(1, min(6, len(tooth_t)+1)):
+            top = []
+            bottom = []
             current = img
             selected_teeth = np.random.choice(tooth_t, i, replace=False, p=weight_t)
             for tooth in selected_teeth:

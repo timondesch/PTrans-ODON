@@ -4,7 +4,6 @@ import cv2
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-print(cv2.__version__)
 from datetime import datetime
 import skimage
 
@@ -83,7 +82,8 @@ def gen_treatment(position, treated_tooth):
     newtreatment = cv2.dilate(bg2, cv2.getStructuringElement(cv2.MORPH_ELLIPSE,
                                                             (20,20))).astype(np.uint8)
 
-    return cv2.bitwise_or(newtreatment.astype(np.uint8), treatment.astype(np.uint8))
+    treat = cv2.bitwise_or(newtreatment.astype(np.uint8), treatment.astype(np.uint8))
+    return np.where((treat>0)&(treated_tooth>0), 255, 0)
 
 def initialize_struct():
     global PATH_OUT, PATH_IN
@@ -100,9 +100,8 @@ def fuse(base_img, top, bottom):
     treated_img_up = np.zeros_like(base_img)
     treated_img_down = np.zeros_like(base_img)
     for treatment in top:
-        treat2 = np.where((treatment[0]>0)&(treatment[1]>0), 255, 0)
 
-        noised = skimage.util.random_noise(treat2/255, mode='speckle', var=0.04**2)
+        noised = skimage.util.random_noise(treatment/255, mode='speckle', var=0.04**2)
         noised = (255*noised).astype(np.uint8)
         
         kernel = np.ones((5,5),np.float32)/25
@@ -112,9 +111,7 @@ def fuse(base_img, top, bottom):
         treated_img_up = np.bitwise_or(treated_img_up, blurred_treat)
 
     for treatment in bottom:
-        treat2 = np.where((treatment[0]>0)&(treatment[1]>0), 255, 0)
-
-        noised = skimage.util.random_noise(treat2/255, mode='speckle', var=0.04**2)
+        noised = skimage.util.random_noise(treatment/255, mode='speckle', var=0.04**2)
         noised = (255*noised).astype(np.uint8)
         
         kernel = np.ones((5,5),np.float32)/25
