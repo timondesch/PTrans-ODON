@@ -52,7 +52,7 @@ for p in h5py_files:
         
         tooth_inpaint = {}
 
-        inpaint = inference.infer(model, img/255)*255
+        inpaint = (inference.infer(model, img/255)*255).astype(np.uint8)
 
         for i in [t for t in treatments[name] if treatments[name][t]]:
             segm = cv2.resize(np.array(f['y'])[...,i], (1024, 512), cv2.INTER_NEAREST)
@@ -72,7 +72,7 @@ for p in h5py_files:
                         current = np.where(tooth_inpaint[i], tooth_inpaint[i], current)
 
                 else:
-                    if(np.any(np.array(f['y'])[...,i])) and np.random.choice([True, False], 1, p=[(((i-1)%8+1)/18), 1 - (((i-1)%8+1)/18)]):            
+                    if(np.any(np.array(f['y'])[...,i])) and np.random.choice([True, False], 1, p=[(((i-1)%8+1)/26), 1 - (((i-1)%8+1)/26)]):            
                         segm = cv2.resize(np.array(f['y'])[...,i], (1024, 512), cv2.INTER_NEAREST)
                         tooth = np.where(segm, img, segm)
                         treatment = gen_treatment(i, tooth)
@@ -80,7 +80,6 @@ for p in h5py_files:
                             top.append(treatment)
                         else:
                             bottom.append(treatment)
-                        
             current = fuse(current, top, bottom)
 
             plt.imsave("OUT/data_aug_mix/" + name + "_" + str(k) + ".png", current, cmap='gray')

@@ -9,22 +9,6 @@ import skimage
 
 """## Code"""
 
-PATH_IN = "../../IN/PNG/dataset_png/"
-NB_TOTAL = 0
-os.makedirs("../../OUT/inpainting_training_set/")
-PATH_OUT = "../../OUT/inpainting_training_set/"
-NB_IMG = 10
-NB_TREAT_MIN, NB_TREAT_MAX = 1, 6
-
-UPPER = [*range(1, 17)]
-LOWER = [*range(17, 33)]
-
-WEIGHTS = [*range(1, 9)] + [*range(1, 9)]
-WEIGHTS = WEIGHTS / np.sum(WEIGHTS)
-
-for base, dirs, files in os.walk(PATH_IN):
-    for directories in dirs:
-        NB_TOTAL += 1
 
 def show(img):
     plt.axis('off')
@@ -133,6 +117,23 @@ def fuse(base_img, top, bottom):
 
 
 def main():
+    PATH_IN = "../../IN/PNG/dataset_png/"
+    NB_TOTAL = 0
+    os.makedirs("../../OUT/inpainting_training_set/")
+    PATH_OUT = "../../OUT/inpainting_training_set/"
+    NB_IMG = 10
+    NB_TREAT_MIN, NB_TREAT_MAX = 1, 6
+
+    UPPER = [*range(1, 17)]
+    LOWER = [*range(17, 33)]
+
+    WEIGHTS = [*range(1, 9)] + [*range(1, 9)]
+    WEIGHTS = WEIGHTS / np.sum(WEIGHTS)
+
+    for base, dirs, files in os.walk(PATH_IN):
+        for directories in dirs:
+            NB_TOTAL += 1
+
     NB_IMG = 10
     NB_TREAT = 2
     images = initialize_struct()
