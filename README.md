@@ -1,5 +1,7 @@
 # PTrans-ODON
 
+
+
 ## Structure
 
 ```
@@ -26,15 +28,15 @@
 │   │   ├── OUT/
 │   │   ├── find_treatments.ipynb
 │   │   └── font.ttf
-│   └── segmentation_assessment/
+│   └── inpainting_assessment/
 │       ├── assess_data/
-│       │   └── scores.csv
 │       └── src/
 │           └── dataset_eval.py
 ├── .gitignore
 ├── gen_aug_IP.py
 ├── gen_aug_mix.py
 ├── gen_aug_treatments.py
+├── main.py
 └── README.md
 ```
 
@@ -53,8 +55,22 @@ Below are the packages required to run the project:
 - scikit-image==0.19.2
 - tensorflow==2.9.1
 
+Optional:
+- scikit-learn==1.1.1 (for `tools/dataset_annotation/find_treatments.ipynb`)
+
 
 ## Usage
 ### Data augmentation
-1. Add the .h5py images dataset to `./IN/H5PY/h5py_dataset/` 
-2. Run a combination of `gen_aug_IP.py`,  `gen_aug_treatments.py` and `gen_aug_mix.py`
+1. Add the base .h5py images dataset to `./IN/H5PY/h5py_dataset/` 
+2. Run a combination of `gen_aug_IP.py`,  `gen_aug_treatments.py` and `gen_aug_mix.py` or all of them with `main.py`
+
+### Training the inpainting model
+The current model is already trained with all available data, and thus retraining it might lead to subpar performances. However if need be, it can be retrained with the following steps:
+1. Add the training dataset in `IN/PNG/bases/`. There must be one directory for every image with the same name as the image. In each of them, there must be the image as well as all of its segmentations named `imageName_i.png` with i being the tooth number.
+2. Run `tools/treatments_generations.py`
+3. Run the training notebook (`tools/IPDL/inpainting_training.ipynb`)
+
+### Tool for finding treatments
+1. Add the base .h5py images dataset to `./IN/H5PY/h5py_dataset/` 
+2. Run `tools/dataset_annotation/find_treatments.ipynb`
+3. Images with annotations can then be found under `tools/dataset_annotation/OUT/`
