@@ -58,7 +58,7 @@ for p in h5py_files:
             bottom = []
             current = img
             temp = int(np.random.normal(5, 2))
-            selected_teeth = np.random.choice(tooth_t, (temp if temp else 1), replace=False, p=weight_t)
+            selected_teeth = np.random.choice(tooth_t, (temp if temp>0 else 1), replace=False, p=weight_t)
             for tooth in selected_teeth:
                 segm = cv2.resize(np.array(f['y'])[...,tooth], (1024, 512), cv2.INTER_NEAREST)
                 tooth_w_t = np.where(segm, img, segm)
